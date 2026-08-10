@@ -18,6 +18,11 @@ canvas{position:fixed;inset:0;z-index:0;display:block}
 #hud{position:fixed;inset:0;z-index:5;pointer-events:none}
 .ui-block{pointer-events:auto}
 
+/* hide-gui mode */
+body.nogui #plate,body.nogui #statsPanel,body.nogui #questPanel,body.nogui #skillPanel,body.nogui #spOpen,
+body.nogui #gearBtn,body.nogui #setPanel,body.nogui #helpBox,body.nogui #artBtn,body.nogui #bossBar,
+body.nogui #dialog,body.nogui #artModal{display:none!important}
+
 #leftUI{position:absolute;top:14px;left:14px;display:flex;flex-direction:column;gap:8px;width:252px}
 #plate{padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;backdrop-filter:blur(8px)}
 #plate .nm{font-family:'Orbitron';font-size:12px;letter-spacing:2px;color:#cfa9ff;margin-bottom:6px;display:flex;justify-content:space-between;gap:12px}
@@ -41,7 +46,7 @@ canvas{position:fixed;inset:0;z-index:0;display:block}
 .st-add{width:23px;height:23px;border-radius:6px;border:1px solid var(--line);background:rgba(90,47,184,.25);color:#fff;cursor:pointer;font-size:14px;line-height:1;transition:.15s}
 .st-add:disabled{opacity:.3;cursor:default}
 .st-add.can{background:linear-gradient(145deg,#7a2ff0,#a259ff);box-shadow:0 0 10px rgba(162,89,255,.55);animation:pulse 1.6s ease-in-out infinite}
-.st-sub{font-size:9px;color:#8f7cb8;letter-spacing:1px;margin-top:6px;text-align:center}
+.st-sub{font-size:9px;color:#8f7cb8;letter-spacing:1px;margin-top:6px;text-align:center;line-height:1.5}
 
 /* quest panel */
 #questPanel{padding:9px 12px;background:var(--panel);border:1px solid rgba(255,176,60,.4);border-radius:12px;backdrop-filter:blur(8px)}
@@ -53,6 +58,19 @@ canvas{position:fixed;inset:0;z-index:0;display:block}
 #qBar{height:7px;border-radius:4px;background:#1c1230;border:1px solid rgba(255,255,255,.08);overflow:hidden}
 #qFill{height:100%;width:0%;background:linear-gradient(90deg,#ffb03c,#ff7a1f);transition:width .2s}
 .q-reward{font-size:10px;color:#ffd9a0;letter-spacing:1px;margin-top:5px;font-family:'Orbitron'}
+
+/* boss bar */
+#bossBar{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:min(420px,70vw);text-align:center}
+.b-name{font-family:'Orbitron';font-size:11px;letter-spacing:4px;color:#ff8a9a;text-shadow:0 0 10px rgba(255,42,74,.7);margin-bottom:5px}
+#bWrap{height:12px;border-radius:6px;background:#1c0a12;border:1px solid rgba(255,42,74,.5);overflow:hidden;box-shadow:0 0 16px rgba(255,42,74,.3)}
+#bFill{height:100%;width:100%;background:linear-gradient(90deg,#8a1030,#ff2a4a,#ff8a5a);transition:width .2s}
+
+/* quest giver dialog */
+#dialog{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);max-width:480px;width:calc(100% - 40px);
+  background:linear-gradient(160deg,rgba(30,18,58,.94),rgba(12,7,26,.94));border:1px solid rgba(255,207,106,.5);
+  border-radius:14px;padding:11px 16px;backdrop-filter:blur(8px);box-shadow:0 0 24px rgba(255,176,60,.2)}
+.dlg-name{font-family:'Orbitron';font-size:10px;letter-spacing:3px;color:#ffd76a;margin-bottom:4px}
+#dlgText{font-size:13px;color:#e8dff5;line-height:1.5}
 
 #cross{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;opacity:.9}
 #cross:before,#cross:after{content:'';position:absolute;background:var(--purple);box-shadow:0 0 6px var(--purple)}
@@ -91,9 +109,11 @@ body.touch .sk-key{display:none}
 #spOpen{position:absolute;right:0;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;padding:14px 7px;border-radius:10px 0 0 10px;
   border:1px solid var(--line);border-right:none;background:var(--panel);color:#cfa9ff;font-family:'Orbitron';font-size:10px;letter-spacing:3px;cursor:pointer;display:none}
 
-/* settings */
-#gearBtn{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:#cfa9ff;font-size:18px;cursor:pointer;backdrop-filter:blur(8px)}
-#gearBtn:hover{color:#fff;border-color:var(--purple)}
+/* top-right buttons */
+#gearBtn,#guiBtn{position:absolute;top:14px;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:#cfa9ff;font-size:18px;cursor:pointer;backdrop-filter:blur(8px)}
+#gearBtn{right:14px}
+#guiBtn{right:60px}
+#gearBtn:hover,#guiBtn:hover{color:#fff;border-color:var(--purple)}
 #setPanel{position:absolute;top:58px;right:14px;width:220px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;backdrop-filter:blur(10px)}
 #setPanel h4{font-family:'Orbitron';font-size:9px;letter-spacing:2px;color:#cfa9ff;margin-bottom:9px}
 .opt{display:flex;align-items:center;justify-content:space-between;font-size:13px;margin:7px 0;color:#ddd2f2}
@@ -208,7 +228,8 @@ body.touch .sk-key{display:none}
       <div id="xpWrap"><div id="xpFill"></div></div>
       <div class="st-row"><span>❤ HEALTH <em id="healthPts">0</em></span><button id="addHp" class="st-add" disabled>+</button></div>
       <div class="st-row"><span>✦ FRUIT <em id="fruitPts">0</em></span><button id="addFr" class="st-add" disabled>+</button></div>
-      <div class="st-sub">+20 HP / PT · +20 DMG / PT · MAX LV 3000</div>
+      <div class="st-row"><span>💚 REGEN <em id="regenPts">0</em></span><button id="addRg" class="st-add" disabled>+</button></div>
+      <div class="st-sub">PER PT: +20 HP · +20 DMG · +5 HP/S REGEN<br>+3 PTS PER LEVEL · MAX LV 3000</div>
     </div>
     <div id="questPanel" class="ui-block">
       <div class="q-top"><span class="q-title">◆ QUEST</span><span id="qProg"></span></div>
@@ -219,6 +240,12 @@ body.touch .sk-key{display:none}
     </div>
   </div>
 
+  <div id="bossBar" class="hidden">
+    <div class="b-name">◆ VOID SENTINEL ◆</div>
+    <div id="bWrap"><div id="bFill"></div></div>
+  </div>
+
+  <button id="guiBtn" class="ui-block" title="Hide / show GUI">👁</button>
   <button id="gearBtn" class="ui-block">⚙</button>
   <div id="setPanel" class="ui-block hidden">
     <h4>GRAPHICS · ADVANCED</h4>
@@ -251,10 +278,15 @@ body.touch .sk-key{display:none}
     <span class="k">W</span><span class="k">A</span><span class="k">S</span><span class="k">D</span> Move · Mouse Look<br>
     <span class="k">Z</span><span class="k">X</span><span class="k">C</span><span class="k">V</span><span class="k">B</span><span class="k">F</span> Skills ·
     <span class="k">T</span> Thunder Form<br>
-    <span class="k">Q</span> Switch Fruit · Scroll / Pinch — Zoom
+    <span class="k">Q</span> Switch Fruit · Scroll / Pinch — Zoom · Visit Elder Soul for quests
   </div>
 
   <button id="artBtn" class="ui-block">🏺 ARTIFACTS</button>
+
+  <div id="dialog" class="ui-block hidden">
+    <div class="dlg-name">◆ ELDER SOUL — QUEST GIVER</div>
+    <div id="dlgText"></div>
+  </div>
 
   <div id="cross"><i></i></div>
   <div id="toastLayer"></div>
@@ -272,7 +304,7 @@ body.touch .sk-key{display:none}
       <button class="roll-btn" id="roll10">SUMMON ×10<span>💰900</span></button>
     </div>
     <div class="art-odds" id="oddsRow"></div>
-    <div class="art-inv-title">COLLECTION — <span id="invCt">0 / 21</span></div>
+    <div class="art-inv-title">COLLECTION — <span id="invCt">0 / 0</span></div>
     <div id="invGrid"></div>
     <div id="invEmpty">No artifacts yet. Summon your first relic…</div>
   </div>
@@ -286,9 +318,9 @@ body.touch .sk-key{display:none}
   <div id="fruit"><div class="core"></div><div class="s1"></div><div class="s2"></div></div>
   <h1>SOUL FRUIT<br>SIMULATOR</h1>
   <p>The Sun of Ra and the Storm Cloud follow you. Two devil fruits await — Soul and Lightning×Ghost.
-     Complete quests, harvest souls, earn money, summon artifacts.</p>
+     Complete quests from the Elder Soul, slay the Void Sentinel, harvest souls, summon artifacts.</p>
   <button id="startBtn">ENTER THE VOID</button>
-  <div class="ctl">WASD + MOUSE · Z X C V B F · T THUNDER · Q SWITCH FRUIT<br>SCROLL / PINCH TO ZOOM · LEVEL UP TO LV 3000</div>
+  <div class="ctl">WASD + MOUSE · Z X C V B F · T THUNDER · Q SWITCH FRUIT<br>SCROLL / PINCH TO ZOOM · 2× XP · LEVEL UP TO LV 3000</div>
 </div>
 
 <script type="module">
@@ -352,29 +384,34 @@ const _v1=new THREE.Vector3(),_v2=new THREE.Vector3(),_v3=new THREE.Vector3();
 const clamp=THREE.MathUtils.clamp;
 
 /* ================= STATS / LEVELING ================= */
-const STAT={level:1,xp:0,xpNeed:42,points:0,health:0,fruit:0,MAXLV:3000};
+const STAT={level:1,xp:0,xpNeed:42,points:0,health:0,fruit:0,regen:0,MAXLV:3000};
 const lvNum=document.getElementById('lvNum'),ptNum=document.getElementById('ptNum'),
       xpFill=document.getElementById('xpFill'),healthPtsEl=document.getElementById('healthPts'),
-      fruitPtsEl=document.getElementById('fruitPts'),addHpBtn=document.getElementById('addHp'),addFrBtn=document.getElementById('addFr');
+      fruitPtsEl=document.getElementById('fruitPts'),regenPtsEl=document.getElementById('regenPts'),
+      addHpBtn=document.getElementById('addHp'),addFrBtn=document.getElementById('addFr'),addRgBtn=document.getElementById('addRg');
 function updateStatsUI(){
   lvNum.textContent=STAT.level;
   ptNum.textContent=STAT.points+' PTS';
   xpFill.style.width=clamp(STAT.xp/STAT.xpNeed*100,0,100)+'%';
   healthPtsEl.textContent=STAT.health;
   fruitPtsEl.textContent=STAT.fruit;
-  addHpBtn.disabled=addFrBtn.disabled=STAT.points<=0;
-  addHpBtn.classList.toggle('can',STAT.points>0);
-  addFrBtn.classList.toggle('can',STAT.points>0);
+  regenPtsEl.textContent=STAT.regen;
+  const has=STAT.points>0;
+  addHpBtn.disabled=addFrBtn.disabled=addRgBtn.disabled=!has;
+  addHpBtn.classList.toggle('can',has);
+  addFrBtn.classList.toggle('can',has);
+  addRgBtn.classList.toggle('can',has);
 }
 function gainXP(n,worldPos){
   if(STAT.level>=STAT.MAXLV)return;
+  n=Math.round(n*2*MOD.xp); // 2× XP base + artifact XP boost
   STAT.xp+=n;
   if(worldPos)showDmg(worldPos,'+'+n+' XP','#9adcff');
   while(STAT.xp>=STAT.xpNeed&&STAT.level<STAT.MAXLV){
-    STAT.xp-=STAT.xpNeed;STAT.level++;STAT.points++;
+    STAT.xp-=STAT.xpNeed;STAT.level++;STAT.points+=3; // +3 stat points per level
     STAT.xpNeed=Math.floor(30+STAT.level*12);
     P.hp=Math.min(P.maxHp,P.hp+P.maxHp*.25);
-    toast('⬆ LEVEL '+STAT.level,'#ffd9a8');sfx('level');updateHpUI();
+    toast('⬆ LEVEL '+STAT.level+' · +3 PTS','#ffd9a8');sfx('level');updateHpUI();
   }
   if(qIdx<QUESTS.length&&QUESTS[qIdx].type==='level')checkQuest();
   updateStatsUI();
@@ -392,6 +429,7 @@ function spendPoint(stat){
 }
 addHpBtn.addEventListener('click',()=>spendPoint('health'));
 addFrBtn.addEventListener('click',()=>spendPoint('fruit'));
+addRgBtn.addEventListener('click',()=>spendPoint('regen'));
 updateStatsUI();
 
 /* ================= QUESTS ================= */
@@ -402,15 +440,16 @@ const QUESTS=[
  {name:'INFERNO',desc:'Set enemies ablaze 8 times',type:'burn',need:8,money:350,xp:200},
  {name:'JUDGEMENT DAY',desc:'Unleash Thunder Judgement',type:'judgement',need:1,money:500,xp:300},
  {name:'ASCENSION',desc:'Reach Level 5',type:'level',need:5,money:600,xp:0},
+ {name:'GIANT SLAYER',desc:'Defeat the Void Sentinel',type:'boss',need:1,money:1000,xp:1000},
  {name:'MASSACRE',desc:'Kill 30 enemies',type:'kill',need:30,money:800,xp:500},
  {name:'END OF EVERYTHING',desc:'Cast End of Life 3 times',type:'end',need:3,money:900,xp:800},
  {name:'IMMORTAL',desc:'Reach Level 10',type:'level',need:10,money:1500,xp:1000},
 ];
 let qIdx=0;
-const qProg={kill:0,thunder:0,burn:0,judgement:0,end:0};
+const qProg={kill:0,thunder:0,burn:0,judgement:0,end:0,boss:0};
 const qName=document.getElementById('qName'),qDesc=document.getElementById('qDesc'),
       qFillEl=document.getElementById('qFill'),qReward=document.getElementById('qReward'),
-      qProgTxt=document.getElementById('qProg');
+      qProgTxt=document.getElementById('qProg'),dlgText=document.getElementById('dlgText');
 function questEvent(type){
   if(qIdx>=QUESTS.length)return;
   const q=QUESTS[qIdx];
@@ -439,6 +478,7 @@ function updateQuestUI(){
     qFillEl.style.width='100%';
     qReward.textContent='◆ ◆ ◆';
     qProgTxt.textContent='';
+    dlgText.textContent='You have completed every trial, Reaper. The void bows to you. Go forth as its master.';
     return;
   }
   const q=QUESTS[qIdx];
@@ -448,13 +488,14 @@ function updateQuestUI(){
   qFillEl.style.width=clamp(prog/q.need*100,0,100)+'%';
   qProgTxt.textContent=prog+' / '+q.need;
   qReward.textContent='🎁 '+q.money+'💰'+(q.xp?' + '+q.xp+' XP':'');
+  dlgText.textContent=`Your current trial: “${q.name}” — ${q.desc}. Reward: ${q.money}💰${q.xp?' + '+q.xp+' XP':''}. Stay near the glowing rings if you fear the dormant ones… and beware the Void Sentinel.`;
 }
 
 /* ================= ARTIFACTS / GACHA ================= */
 let MONEY=300;
 const moneyCt=document.getElementById('moneyCt'),artMoney=document.getElementById('artMoney');
 function updateMoney(){moneyCt.textContent=MONEY;artMoney.textContent=MONEY;}
-const MOD={dmg:1,fire:1,light:1,cd:1,ls:0,spd:1,hp:1,money:1,heal:1,dr:0};
+const MOD={dmg:1,fire:1,light:1,cd:1,ls:0,spd:1,hp:1,money:1,heal:1,dr:0,xp:1};
 const RAR=[
  {name:'COMMON',c:'#9aa3b8',w:58},
  {name:'RARE',c:'#4aa3ff',w:26},
@@ -477,6 +518,7 @@ const ARTIFACTS=[
  {id:'e2',n:'Soul Mirror',i:'🪞',r:2,deb:false,m:{heal:.3}},
  {id:'e3',n:"Giant's Blood",i:'🩸',r:2,deb:false,m:{hp:.2}},
  {id:'e4',n:'Shackle of the Damned',i:'⛓',r:2,deb:true,m:{dmg:.25,spd:-.2}},
+ {id:'e5',n:'XP Harvest',i:'🌾',r:2,deb:false,m:{xp:1}},
  {id:'l1',n:'Eye of Ra',i:'🌞',r:3,deb:false,m:{fire:.3}},
  {id:'l2',n:'Heart of the Storm',i:'⚡',r:3,deb:false,m:{light:.3}},
  {id:'l3',n:'Blood Grail',i:'🏆',r:3,deb:false,m:{ls:.025}},
@@ -489,13 +531,14 @@ const ART_BY_ID={};for(const a of ARTIFACTS)ART_BY_ID[a.id]=a;
 const owned=new Map();
 const chipDR=document.getElementById('chipDR'),chipLS=document.getElementById('chipLS');
 function recalcMods(){
-  MOD.dmg=1;MOD.fire=1;MOD.light=1;MOD.cd=1;MOD.ls=0;MOD.spd=1;MOD.hp=1;MOD.money=1;MOD.heal=1;MOD.dr=0;
+  MOD.dmg=1;MOD.fire=1;MOD.light=1;MOD.cd=1;MOD.ls=0;MOD.spd=1;MOD.hp=1;MOD.money=1;MOD.heal=1;MOD.dr=0;MOD.xp=1;
   for(const[id,st]of owned){
     if(!st.active)continue;
     const m=ART_BY_ID[id].m;
     if(m.dmg)MOD.dmg+=m.dmg; if(m.fire)MOD.fire+=m.fire; if(m.light)MOD.light+=m.light;
     if(m.cd)MOD.cd+=m.cd; if(m.ls)MOD.ls+=m.ls; if(m.spd)MOD.spd+=m.spd;
-    if(m.hp)MOD.hp+=m.hp; if(m.money)MOD.money+=m.money; if(m.heal)MOD.heal+=m.heal; if(m.dr)MOD.dr+=m.dr;
+    if(m.hp)MOD.hp+=m.hp; if(m.money)MOD.money+=m.money; if(m.heal)MOD.heal+=m.heal;
+    if(m.dr)MOD.dr+=m.dr; if(m.xp)MOD.xp+=m.xp;
   }
   MOD.cd=clamp(MOD.cd,.35,2);MOD.spd=clamp(MOD.spd,.35,3);MOD.hp=clamp(MOD.hp,.35,3);
   const newMax=Math.round((100+STAT.health*20)*MOD.hp);
@@ -518,6 +561,7 @@ function fmtMods(m){
   if(m.money)p(m.money,'MONEY');
   if(m.heal)p(m.heal,'HEALING');
   if(m.dr)p(m.dr,'DMG REDUCTION');
+  if(m.xp)p(m.xp,'XP GAIN');
   return parts.join(' · ');
 }
 const rollStage=document.getElementById('rollStage'),invGrid=document.getElementById('invGrid'),
@@ -564,7 +608,7 @@ function doRoll(n){
     rollStage.appendChild(card);
   });
   const best=Math.max(...results.map(r=>r.a.r));
-  if(best>=3){sfx('level');addShake(.3);}else sfx('ui');
+  if(best>=3){sfx('level');addShake(.6);}else sfx('ui');
 }
 document.getElementById('roll1').addEventListener('click',()=>doRoll(1));
 document.getElementById('roll10').addEventListener('click',()=>doRoll(10));
@@ -654,6 +698,31 @@ for(let i=0;i<12;i++){
   const cap=new THREE.Mesh(new THREE.BoxGeometry(2,.4,2),new THREE.MeshStandardMaterial({color:0x2a1650,emissive:0x8a3cff,emissiveIntensity:.8}));
   cap.position.set(p.position.x,h+.2,p.position.z);scene.add(cap);
 }
+
+/* ================= QUEST GIVER NPC ================= */
+const giver=new THREE.Group();
+{
+  const robe=new THREE.Mesh(new THREE.ConeGeometry(.55,1.6,14),
+    new THREE.MeshStandardMaterial({color:0x241650,roughness:.7,emissive:0x1a0f33,emissiveIntensity:.4}));
+  robe.position.y=.8;robe.castShadow=true;giver.add(robe);
+  const head=new THREE.Mesh(new THREE.SphereGeometry(.26,16,12),
+    new THREE.MeshStandardMaterial({color:0x1c1430,roughness:.5,emissive:0x3a2470,emissiveIntensity:.5}));
+  head.position.y=1.72;giver.add(head);
+  const eyeM=new THREE.MeshBasicMaterial({color:0xffd76a});
+  for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.045,8,8),eyeM);e.position.set(s*.1,1.76,-.22);giver.add(e);}
+  const staff=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,1.8,8),
+    new THREE.MeshStandardMaterial({color:0x2a1a10,roughness:.8}));
+  staff.position.set(.5,.9,0);giver.add(staff);
+  const orb=new THREE.Mesh(new THREE.SphereGeometry(.12,12,10),new THREE.MeshBasicMaterial({color:0xffd76a}));
+  orb.position.set(.5,1.85,0);giver.add(orb);
+  const pl=new THREE.PointLight(0xffc86a,14,8,2);pl.position.set(.5,1.85,0);giver.add(pl);
+  const marker=new THREE.Mesh(new THREE.OctahedronGeometry(.15),new THREE.MeshBasicMaterial({color:0xffd76a}));
+  marker.position.y=2.5;giver.add(marker);
+  giver.userData.marker=marker;
+}
+giver.position.set(4,0,4);
+scene.add(giver);
+const dialog=document.getElementById('dialog');
 
 /* ================= PARTICLE POOL ================= */
 const PMAX=1600;
@@ -808,7 +877,6 @@ function createBolt(a,b,hex=0x8b2fff,silent=false){
     return true;}});
   if(!silent)sfx('zap');
 }
-/* spectral ghost helper */
 function createGhost(scale=1){
   const g=new THREE.Group();
   const m=new THREE.MeshBasicMaterial({color:0xd9c8ff,transparent:true,opacity:.55,blending:THREE.AdditiveBlending,depthWrite:false});
@@ -839,7 +907,7 @@ const P={hp:100,maxHp:100,vy:0,flightT:0,dead:false,lastHurt:-99,rotY:0,kills:0}
 let yaw=0,pitch=.32,shakeAmp=0;
 let camDist=7;
 const DIST_MIN=3.5,DIST_MAX=26;
-function addShake(a){if(SETTINGS.shake)shakeAmp=Math.min(1.5,shakeAmp+a);}
+function addShake(a){if(SETTINGS.shake)shakeAmp=Math.min(3,shakeAmp+a);}
 function camForward(out,p=true){
   out.set(-Math.sin(yaw)*Math.cos(pitch),p?-Math.sin(pitch):0,-Math.cos(yaw)*Math.cos(pitch));return out.normalize();
 }
@@ -853,7 +921,7 @@ function purpleTint(){
   }));
 }
 
-/* ================= SOULS (reworked models) ================= */
+/* ================= SOULS ================= */
 function makeSun(){
   const g=new THREE.Group();
   const core=new THREE.Mesh(new THREE.SphereGeometry(.26,24,18),new THREE.MeshBasicMaterial({color:0xffe9b0}));
@@ -929,7 +997,6 @@ function updateSoul(s,dt,isSun){
   if(s.mode==='idle')s.scaleT=1;
   moveToward(s.g.position,d,speed,dt);
   const sc=s.scaleT;s.g.scale.lerp(_v1.set(sc,sc,sc),Math.min(1,8*dt));
-  /* model animations */
   const t=tGlobal;
   if(isSun){
     const a=sun.anim;
@@ -944,7 +1011,7 @@ function updateSoul(s,dt,isSun){
     const a=cloud.anim;
     cloud.g.rotation.y=t*.5;
     a.mist.rotation.z=t*.7;
-    a.core.material.opacity=.25+Math.random()*.45; // inner lightning flicker
+    a.core.material.opacity=.25+Math.random()*.45;
     a.light.intensity=18+Math.random()*10;
     if(Math.random()<dt*4){
       spawnP(s.g.position.x+(Math.random()-.5),s.g.position.y+(Math.random()-.5)*.6,s.g.position.z+(Math.random()-.5),
@@ -953,8 +1020,21 @@ function updateSoul(s,dt,isSun){
   }
 }
 
-/* ================= ENEMIES ================= */
+/* ================= ENEMIES + BOSS ================= */
 const enemies=[];
+const bossBar=document.getElementById('bossBar'),bFill=document.getElementById('bFill');
+let bossRef=null;
+function baseEnemyFields(){
+  return{vy:0,liftT:0,liftSpeed:4,burnT:0,burnTick:0,atkCd:0,flash:0,
+    aggro:false,stunT:0,slowT:0,phase:Math.random()*6,respawn:0,barDirty:false,barT:0,detectR:1,isBoss:false};
+}
+function addDetectRing(g,e){
+  const dr=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),
+    new THREE.MeshBasicMaterial({color:0x7a5aba,transparent:true,opacity:.16,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));
+  dr.rotation.x=-Math.PI/2;dr.position.y=.06;dr.scale.setScalar(e.detectR);
+  g.add(dr);
+  return dr;
+}
 function makeEnemy(){
   const g=new THREE.Group();
   const mat=new THREE.MeshStandardMaterial({color:0x241636,roughness:.7,flatShading:true,emissive:0x000000});
@@ -969,11 +1049,33 @@ function makeEnemy(){
   const bar=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false}));
   bar.scale.set(1.7,.27,1);bar.position.y=2.35;bar.renderOrder=999;g.add(bar);
   scene.add(g);
-  return{g,body,mat,barCv:cv,barTex:tex,bar,alive:true,hp:1000,maxHp:1000,
-    vy:0,liftT:0,liftSpeed:4,burnT:0,burnTick:0,atkCd:0,flash:0,
-    aggro:false,stunT:0,slowT:0,phase:Math.random()*6,respawn:0,barDirty:false,barT:0};
+  const e={g,body,mat,barCv:cv,barTex:tex,bar,alive:true,hp:1000,maxHp:1000,...baseEnemyFields()};
+  e.dring=addDetectRing(g,e);
+  return e;
+}
+function makeBoss(){
+  const g=new THREE.Group();
+  const mat=new THREE.MeshStandardMaterial({color:0x33101f,roughness:.6,flatShading:true,emissive:0x000000});
+  const body=new THREE.Mesh(new THREE.IcosahedronGeometry(1.5,1),mat);
+  body.position.y=2.2;body.castShadow=true;g.add(body);
+  for(let i=0;i<6;i++){
+    const sp=new THREE.Mesh(new THREE.ConeGeometry(.3,1.1,6),mat);
+    const a=i/6*Math.PI*2;
+    sp.position.set(Math.cos(a)*.95,3.3,Math.sin(a)*.95);
+    sp.rotation.z=Math.cos(a)*.7;sp.rotation.x=-Math.sin(a)*.7;
+    g.add(sp);
+  }
+  const eyeM=new THREE.MeshBasicMaterial({color:0xff2a4a});
+  for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(.16,10,10),eyeM);e.position.set(s*.5,2.6,-1.25);g.add(e);}
+  const pl=new THREE.PointLight(0xff2a4a,18,12,2);pl.position.set(0,2.6,-1);g.add(pl);
+  scene.add(g);
+  const e={g,body,mat,bar:null,barCv:null,barTex:null,alive:true,hp:8000,maxHp:8000,...baseEnemyFields(),
+    detectR:4,isBoss:true};
+  e.dring=addDetectRing(g,e);
+  return e;
 }
 function drawBar(e){
+  if(!e.bar)return;
   const x=e.barCv.getContext('2d');x.clearRect(0,0,64,10);
   x.fillStyle='rgba(0,0,0,.65)';x.fillRect(0,0,64,10);
   const w=62*clamp(e.hp/e.maxHp,0,1);
@@ -983,36 +1085,41 @@ function drawBar(e){
   e.barTex.needsUpdate=true;
 }
 function respawnPos(){const a=Math.random()*Math.PI*2,r=14+Math.random()*22;return[Math.cos(a)*r,Math.sin(a)*r];}
-for(let i=0;i<8;i++){const e=makeEnemy();const[x,z]=respawnPos();e.g.position.set(x,0,z);drawBar(e);enemies.push(e);}
+for(let i=0;i<14;i++){const e=makeEnemy();const[x,z]=respawnPos();e.g.position.set(x,0,z);drawBar(e);enemies.push(e);}
+bossRef=makeBoss();bossRef.g.position.set(0,0,-34);enemies.push(bossRef);
 function nearestEnemy(pos,maxD){
   let best=null,bd=maxD;
   for(const e of enemies){if(!e.alive)continue;const d=e.g.position.distanceTo(pos);if(d<bd){bd=d;best=e;}}
   return best;
 }
 function applyBurn(e,dur){
-  if(e.burnT<=0)questEvent('burn'); // quest: ignite
+  if(e.burnT<=0)questEvent('burn');
   e.burnT=Math.max(e.burnT,dur);
 }
 function killEnemy(e){
-  e.alive=false;e.hp=0;e.g.visible=false;e.respawn=5;e.liftT=0;e.burnT=0;e.aggro=false;
-  burst(e.g.position.clone().add(_v1.set(0,1,0)),{n:26,color:0x9a4dff,speed:8,life:.8,size:8,grav:-2});
-  burst(e.g.position.clone().add(_v1.set(0,1,0)),{n:14,color:0xff7a1f,speed:6,life:.7,size:7,grav:-2});
+  e.alive=false;e.hp=0;e.g.visible=false;e.respawn=e.isBoss?25:5;e.liftT=0;e.burnT=0;e.aggro=false;
+  burst(e.g.position.clone().add(_v1.set(0,e.isBoss?2.2:1,0)),{n:e.isBoss?70:26,color:0x9a4dff,speed:e.isBoss?12:8,life:.9,size:9,grav:-2});
+  burst(e.g.position.clone().add(_v1.set(0,e.isBoss?2.2:1,0)),{n:e.isBoss?40:14,color:0xff7a1f,speed:e.isBoss?10:6,life:.8,size:8,grav:-2});
   P.kills++;document.getElementById('killCt').textContent='SOULS '+P.kills;
-  const killPos=e.g.position.clone().add(_v1.set(0,1.6,0));
-  gainXP(25+Math.floor(Math.random()*10)+Math.floor(STAT.level*.4),killPos);
-  const coins=Math.round((15+Math.random()*15)*MOD.money);
+  const killPos=e.g.position.clone().add(_v1.set(0,e.isBoss?3:1.6,0));
+  const baseXp=e.isBoss?400:25+Math.floor(Math.random()*10)+Math.floor(STAT.level*.4);
+  gainXP(baseXp,killPos);
+  const coins=Math.round((e.isBoss?400:15+Math.random()*15)*MOD.money);
   MONEY+=coins;updateMoney();
-  showDmg(e.g.position.clone().add(_v1.set(0,2.2,0)),'+'+coins+' 💰','#ffd76a');
+  showDmg(e.g.position.clone().add(_v1.set(0,e.isBoss?3.6:2.2,0)),'+'+coins+' 💰','#ffd76a');
   questEvent('kill');
-  sfx('boom');
+  if(e.isBoss){questEvent('boss');toast('☠ BOSS DEFEATED · VOID SENTINEL','or');addShake(2.5);sfx('bigzap');}
+  else sfx('boom');
 }
 function updateEnemy(e,dt){
   if(!e.alive){e.respawn-=dt;
-    if(e.respawn<=0){e.alive=true;e.hp=e.maxHp;const[x,z]=respawnPos();
-      e.g.position.set(x,0,z);e.g.visible=true;e.aggro=false;drawBar(e);}return;}
+    if(e.respawn<=0){e.alive=true;e.hp=e.maxHp;
+      if(e.isBoss)e.g.position.set(0,0,-34);
+      else{const[x,z]=respawnPos();e.g.position.set(x,0,z);}
+      e.g.visible=true;e.aggro=false;drawBar(e);}return;}
   const p=e.g.position;
   if(e.burnT>0){e.burnT-=dt;e.burnTick-=dt;
-    if(Math.random()<dt*10)spawnP(p.x+(Math.random()-.5)*.8,p.y+1+Math.random()*.8,p.z+(Math.random()-.5)*.8,
+    if(Math.random()<dt*10)spawnP(p.x+(Math.random()-.5)*(e.isBoss?2:.8),p.y+1+Math.random()*(e.isBoss?2.5:.8),p.z+(Math.random()-.5)*(e.isBoss?2:.8),
       (Math.random()-.5)*1.5,2+Math.random()*2,(Math.random()-.5)*1.5,0xff7a1f,.5,6,2);
     if(e.burnTick<=0){e.burnTick=.5;dealDamage(e,e.maxHp*.02,'#ff9a3c','fire');}
   }
@@ -1020,42 +1127,49 @@ function updateEnemy(e,dt){
   else if(p.y>0||e.vy!==0){e.vy-=25*dt;p.y+=e.vy*dt;
     if(p.y<=0){p.y=0;e.vy=0;burst(p.clone(),{n:6,color:0x665588,speed:3,life:.4,size:5,grav:-2,up:1});}}
 
-  /* aggro detection (1 m radius) — enemies stay still otherwise */
+  /* detection + aggro */
   e.stunT=Math.max(0,e.stunT-dt);
   e.slowT=Math.max(0,e.slowT-dt);
   const dh=Math.hypot(p.x-player.position.x,p.z-player.position.z);
+  if(e.dring){
+    if(dh<=e.detectR){e.dring.material.color.setHex(0xff4a5a);e.dring.material.opacity=.55;}
+    else{e.dring.material.color.setHex(0x7a5aba);e.dring.material.opacity=.16;}
+  }
   if(!e.aggro){
-    if(!P.dead&&dh<=1){
+    if(!P.dead&&dh<=e.detectR){ // player touched detection range → chase
       e.aggro=true;e.flash=.35;
-      spawnRing(p,0xff6a1f,1.6,.35);
-      burst(p.clone().add(_v1.set(0,1.4,0)),{n:6,color:0xff6a1f,speed:3,life:.4,size:5});
+      spawnRing(p,e.isBoss?0xff2a4a:0xff6a1f,e.isBoss?4:1.6,.35);
+      burst(p.clone().add(_v1.set(0,1.4,0)),{n:6,color:e.isBoss?0xff2a4a:0xff6a1f,speed:3,life:.4,size:5});
       sfx('ui');
     }
   }else if(dh>14)e.aggro=false;
 
   if(p.y<=0&&e.liftT<=0){
-    if(e.stunT>0){ // tortured — frozen, trembling
+    if(e.stunT>0){
       e.body.position.x=Math.sin(tGlobal*45+e.phase)*.06;
     }else if(e.aggro&&!P.dead){
       e.body.position.x=0;
       const dir=_v1.subVectors(player.position,p);dir.y=0;
-      if(dir.length()>1.2){
+      if(dir.length()>(e.isBoss?2.4:1.2)){
         dir.normalize();
-        p.addScaledVector(dir,2.7*(e.slowT>0?.45:1)*dt);
+        p.addScaledVector(dir,(e.isBoss?2.0:2.7)*(e.slowT>0?.45:1)*dt);
         e.g.rotation.y=Math.atan2(dir.x,dir.z);
       }
-      e.body.position.y=1.05+Math.sin(tGlobal*4+e.phase)*.09;
-    }else{ // dormant — perfectly still
+      e.body.position.y=(e.isBoss?2.2:1.05)+Math.sin(tGlobal*4+e.phase)*.09;
+    }else{
       e.body.position.x=0;
-      e.body.position.y=1.05+Math.sin(tGlobal*1.2+e.phase)*.02;
+      e.body.position.y=(e.isBoss?2.2:1.05)+Math.sin(tGlobal*1.2+e.phase)*.02;
     }
   }
   e.atkCd-=dt;
-  if(!P.dead&&e.atkCd<=0&&p.distanceTo(player.position)<1.5&&p.y<2){damagePlayer(8);e.atkCd=.9;
-    burst(player.position.clone().add(_v1.set(0,1.2,0)),{n:6,color:0xff4a2f,speed:4,life:.4,size:5});}
+  const atkRange=e.isBoss?2.8:1.5;
+  if(!P.dead&&e.atkCd<=0&&p.distanceTo(player.position)<atkRange&&p.y<2.5){
+    damagePlayer(e.isBoss?18:8);e.atkCd=e.isBoss?1.1:.9;
+    burst(player.position.clone().add(_v1.set(0,1.2,0)),{n:6,color:0xff4a2f,speed:4,life:.4,size:5});
+  }
   e.flash=Math.max(0,e.flash-dt);
-  e.mat.emissive.setHex(e.flash>0?0xff8855:(e.burnT>0?0x552200:(e.aggro?0x331100:0x000000)));
-  e.mat.emissiveIntensity=e.flash>0?.9:(e.burnT>0?.6:(e.aggro?.35:0));
+  e.mat.emissive.setHex(e.flash>0?0xff8855:(e.burnT>0?0x552200:(e.aggro?(e.isBoss?0x440008:0x331100):0x000000)));
+  e.mat.emissiveIntensity=e.flash>0?.9:(e.burnT>0?.6:(e.aggro?.4:0));
   e.barT-=dt;
   if(e.barDirty&&e.barT<=0){drawBar(e);e.barDirty=false;e.barT=.12;}
 }
@@ -1097,7 +1211,7 @@ function dealDamage(e,amt,color='#fff',school='physical'){
   else if(school==='light')amt*=MOD.light;
   e.hp-=amt;e.flash=.13;e.barDirty=true;
   healPlayer(amt*(0.01+MOD.ls));
-  showDmg(e.g.position.clone().add(_v1.set(0,2,0)),Math.round(amt),color);
+  showDmg(e.g.position.clone().add(_v1.set(0,e.isBoss?3.4:2,0)),Math.round(amt),color);
   if(e.hp<=0)killEnemy(e);
 }
 function aoeDamage(pos,radius,amt,color,school='physical'){
@@ -1114,7 +1228,7 @@ function damagePlayer(amt){
   amt*=(1-clamp(0.05+MOD.dr,0,.75));
   P.hp-=amt;P.lastHurt=tGlobal;
   vig.style.opacity=.65;setTimeout(()=>vig.style.opacity=0,140);
-  addShake(.2);updateHpUI();
+  addShake(.45);updateHpUI();
   if(P.hp<=0){P.hp=0;P.dead=true;player.visible=false;
     burst(player.position.clone().add(_v1.set(0,1,0)),{n:44,color:0xc07dff,speed:9,life:1,size:9});
     toast('SOUL SHATTERED — RESPAWNING…');
@@ -1160,7 +1274,7 @@ function purpleExplosion(pos,radius,dmg,healMul=0,pillar=true){
   burst(pos.clone().add(_v1.set(0,.3,0)),{n:10,color:0x6a3ab0,speed:radius*.8,life:1.1,size:6,grav:-1,up:2});
   const hit=aoeDamage(pos,radius,dmg,'#c07dff','light');
   if(healMul>0&&hit>0)healPlayer(dmg*hit*healMul,true);
-  addShake(.3+Math.min(.5,radius*.02));sfx('boom');
+  addShake(.5+Math.min(.9,radius*.035));sfx('boom');
 }
 function strikeAt(pos,dmg,radius){
   createBolt(cloud.g.position.clone(),pos.clone().setY(.1),0x8b2fff);
@@ -1247,7 +1361,7 @@ function PillarFX(pos){
   spawnSphereBlast(pos.clone().add(_v1.set(0,.8,0)),6,0xff8a2f,0xffe0b0,.5);
   spawnRing(pos,0xffd27a,4,.45);
   burst(pos.clone().add(_v1.set(0,.5,0)),{n:16,color:0xffd98a,speed:10,life:.7,size:7,grav:-4,up:3});
-  addShake(.55);sfx('boom');
+  addShake(1.0);sfx('boom');
   return{t:0,update(dt){
     this.t+=dt;
     const k=this.t/1;
@@ -1326,7 +1440,7 @@ function EndExplosionFX(target){
   burst(center,{n:70,color:0xff9a3c,speed:14,life:.9,size:9,grav:-5});
   burst(center,{n:45,color:0xb06aff,speed:11,life:.8,size:8,grav:-4});
   burst(center,{n:16,color:0xffe0b0,speed:6,life:1.3,size:6,grav:-1,up:3});
-  addShake(.9);sfx('boom');sfx('zap');
+  addShake(1.7);sfx('boom');sfx('zap');
   const hitSet=new Set();let r=.3,fade=0;
   return{update(dt){
     if(fade>0){fade-=dt;shell.material.opacity*=.8;shell2.material.opacity*=.8;stroke.material.opacity*=.8;
@@ -1345,7 +1459,7 @@ function EndExplosionFX(target){
 /* ================= SKILLS — SOUL FRUIT ================= */
 let thunderMode=0;
 const THUNDER_NAMES=['Thunder Strike','Thunder Rain','Thunder Judgement'];
-function useSnatch(){ // Z · CD 4s
+function useSnatch(){
   const tg=nearestEnemy(player.position,22);
   const tp=tg?tg.g.position.clone():aimPoint.clone();
   setMode(cloud,'snatch',1.2,{pos:tp});
@@ -1358,13 +1472,13 @@ function useSnatch(){ // Z · CD 4s
   });
   sfx('whoosh');
 }
-function useBreath(){ // X · CD 6.5s
+function useBreath(){
   const tg=nearestEnemy(player.position,16);
   setMode(sun,'breath',5,{target:tg});
   addFX(BreathFX(tg));
   sfx('fire');
 }
-function useThunder(){ // C · CD 3s
+function useThunder(){
   const aim=aimPoint.clone();
   questEvent('thunder');
   if(thunderMode===2)questEvent('judgement');
@@ -1402,12 +1516,12 @@ function useThunder(){ // C · CD 3s
         _v1.copy(e.g.position);_v1.y=0;_v2.copy(aim);_v2.y=0;
         if(_v1.distanceTo(_v2)<=R){e.liftT=.35;e.liftSpeed=4;e.vy=0;}}
       purpleTint();
-      addShake(1.3);
+      addShake(2.3);
       sfx('bigzap');sfx('boom');
     });
   }
 }
-function useWrath(){ // V · CD 6s
+function useWrath(){
   const tg=nearestEnemy(player.position,16);
   const pos=tg?tg.g.position.clone().setY(0):aimPoint.clone().setY(0);
   setMode(sun,'wrath',1.25,{pos});
@@ -1417,13 +1531,13 @@ function useWrath(){ // V · CD 6s
     if(_v1.distanceTo(_v2)<=5.5){
       dealDamage(e,70,'#ff9a3c','fire');e.vy=10;e.liftT=0;applyBurn(e,4);}}
 }
-function useEnd(){ // B · CD 9s
+function useEnd(){
   const target=aimPoint.clone();
   addFX(EndBeamFX(target));
   sfx('whoosh');toast('END OF LIFE','#ffb03c');
   questEvent('end');
 }
-function useFlight(){ // F · CD 1s
+function useFlight(){
   P.flightT=1.4;
   setMode(cloud,'flight',1.5,{});
   burst(player.position.clone().add(_v1.set(0,.5,0)),{n:12,color:0x9a4dff,speed:5,life:.5,size:6,grav:-1});
@@ -1431,7 +1545,7 @@ function useFlight(){ // F · CD 1s
 }
 
 /* ================= SKILLS — LIGHTNING × GHOST ================= */
-function useWander(){ // Z · CD 5s — chain lightning wandering between enemies
+function useWander(){
   const first=nearestEnemy(player.position,20);
   const origin=cloud.g.position.clone();
   if(!first){
@@ -1448,7 +1562,7 @@ function useWander(){ // Z · CD 5s — chain lightning wandering between enemie
       flash(e.g.position,0x9a4dff,55,14,.2);
       burst(tp.clone(),{n:10,color:0xb06aff,speed:5,life:.4,size:6,grav:-2});
       dealDamage(e,55,'#c07dff','light');
-      addShake(.1);
+      addShake(.15);
       if(idx>=4)return;
       let next=null,bd=8;
       for(const o of enemies){
@@ -1462,7 +1576,7 @@ function useWander(){ // Z · CD 5s — chain lightning wandering between enemie
   chain(origin,first,0);
   sfx('zap');
 }
-function useTorture(){ // X · CD 8s — ghost tortures the nearest enemy
+function useTorture(){
   const tg=nearestEnemy(player.position,18)||nearestEnemy(aimPoint,10);
   if(!tg){toast('NO TARGET IN RANGE');return;}
   const ghost=createGhost(1.1);scene.add(ghost);
@@ -1473,7 +1587,7 @@ function useTorture(){ // X · CD 8s — ghost tortures the nearest enemy
     tg.stunT=.25;
     ghost.position.set(
       tg.g.position.x+Math.sin(this.t*6)*.45,
-      tg.g.position.y+2.3+Math.sin(this.t*4)*.2,
+      tg.g.position.y+(tg.isBoss?3.6:2.3)+Math.sin(this.t*4)*.2,
       tg.g.position.z+Math.cos(this.t*6)*.45);
     ghost.rotation.y=this.t*3;
     spawnP(ghost.position.x,ghost.position.y-.3,ghost.position.z,
@@ -1486,7 +1600,7 @@ function useTorture(){ // X · CD 8s — ghost tortures the nearest enemy
     return true;
   }});
 }
-function useHaunted(){ // C · CD 11s — haunted lightning storm zone
+function useHaunted(){
   const aim=aimPoint.clone();
   const zoneRing=new THREE.Mesh(new THREE.RingGeometry(.94,1,56),
     new THREE.MeshBasicMaterial({color:0x8a3cff,transparent:true,opacity:.6,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));
@@ -1526,11 +1640,12 @@ function useHaunted(){ // C · CD 11s — haunted lightning storm zone
       spawnRing(p,0xa259ff,3,.35);
       burst(p.clone().add(_v1.set(0,.3,0)),{n:12,color:0xb06aff,speed:6,life:.4,size:6,grav:-3});
       aoeDamage(p,3,45,'#c07dff','light');
+      addShake(.2);
     }
     return true;
   }});
 }
-function useClone(){ // V · CD 9s — ghost clone dashes and detonates
+function useClone(){
   const clone=new THREE.Group();
   const mat=new THREE.MeshBasicMaterial({color:0xb98aff,transparent:true,opacity:.45,blending:THREE.AdditiveBlending,depthWrite:false});
   const body=new THREE.Mesh(new THREE.CapsuleGeometry(.42,.75,6,14),mat);body.position.y=1.05;clone.add(body);
@@ -1554,14 +1669,14 @@ function useClone(){ // V · CD 9s — ghost clone dashes and detonates
       spawnRing(clone.position,0xa259ff,5.5,.5);
       burst(clone.position.clone().add(_v1.set(0,1,0)),{n:40,color:0xb06aff,speed:10,life:.7,size:8,grav:-4});
       aoeDamage(clone.position,5,130,'#c07dff');
-      addShake(.5);sfx('boom');
+      addShake(1.0);sfx('boom');
       scene.remove(clone);
       return false;
     }
     return true;
   }});
 }
-function useSpirit(){ // B · CD 4s — homing spirit orb
+function useSpirit(){
   const tg=nearestEnemy(player.position,20);
   const orb=new THREE.Group();
   const core=new THREE.Mesh(new THREE.SphereGeometry(.18,14,10),new THREE.MeshBasicMaterial({color:0xf0e6ff}));
@@ -1582,7 +1697,7 @@ function useSpirit(){ // B · CD 4s — homing spirit orb
       spawnRing(orb.position,0xa259ff,3.4,.4);
       burst(orb.position.clone(),{n:22,color:0xc9b0ff,speed:8,life:.5,size:6,grav:-2});
       aoeDamage(orb.position,3,95,'#c07dff');
-      addShake(.25);sfx('boom');
+      addShake(.5);sfx('boom');
       scene.remove(orb);
       return false;
     }
@@ -1685,7 +1800,10 @@ function cycleThunder(){
   toast('⚡ '+THUNDER_NAMES[thunderMode].toUpperCase());
   sfx('ui');
 }
+/* skill panel CLOSED by default */
 const skillPanel=document.getElementById('skillPanel'),spOpen=document.getElementById('spOpen');
+skillPanel.style.display='none';
+spOpen.style.display='block';
 document.getElementById('spClose').addEventListener('click',()=>{skillPanel.style.display='none';spOpen.style.display='block';});
 spOpen.addEventListener('click',()=>{skillPanel.style.display='block';spOpen.style.display='none';});
 
@@ -1695,9 +1813,13 @@ function toast(msg,cls=''){
   toastLayer.appendChild(t);setTimeout(()=>t.remove(),2000);
 }
 
-/* ================= SETTINGS UI ================= */
+/* ================= SETTINGS / GUI UI ================= */
 const setPanel=document.getElementById('setPanel');
 document.getElementById('gearBtn').addEventListener('click',()=>setPanel.classList.toggle('hidden'));
+document.getElementById('guiBtn').addEventListener('click',()=>{
+  document.body.classList.toggle('nogui');
+  toast(document.body.classList.contains('nogui')?'GUI HIDDEN':'GUI SHOWN');
+});
 document.getElementById('optBloom').addEventListener('change',e=>{SETTINGS.bloom=e.target.checked;bloomPass.enabled=SETTINGS.bloom;});
 document.getElementById('optShadow').addEventListener('change',e=>{SETTINGS.shadows=e.target.checked;moon.castShadow=SETTINGS.shadows;});
 document.getElementById('optPart').addEventListener('change',e=>{SETTINGS.particles=e.target.checked?1:.45;});
@@ -1891,7 +2013,7 @@ addEventListener('wheel',e=>{
   camDist=clamp(camDist+e.deltaY*0.01,DIST_MIN,DIST_MAX);
 },{passive:false});
 
-/* touch: joystick + look + pinch zoom (right-side touches only) */
+/* touch */
 const joyBase=document.getElementById('joyBase'),joyKnob=document.getElementById('joyKnob');
 const joy={id:null,ox:0,oy:0,dx:0,dy:0};
 const lookMap=new Map();
@@ -2012,13 +2134,33 @@ function animate(){
     }
     player.rotation.y=P.rotY;
 
-    if(!P.dead&&tGlobal-P.lastHurt>4&&P.hp<P.maxHp){P.hp=Math.min(P.maxHp,P.hp+3*dt);updateHpUI();}
+    /* regen + REGEN stat (+5 hp/s per point) */
+    if(!P.dead){
+      let healed=false;
+      if(tGlobal-P.lastHurt>4&&P.hp<P.maxHp){P.hp=Math.min(P.maxHp,P.hp+3*dt);healed=true;}
+      if(STAT.regen>0&&P.hp<P.maxHp){P.hp=Math.min(P.maxHp,P.hp+STAT.regen*5*dt);healed=true;}
+      if(healed)updateHpUI();
+    }
 
     updateSoul(sun,dt,true);
     if(P.flightT>0&&cloud.mode!=='flight')setMode(cloud,'flight',.2,{});
     updateSoul(cloud,dt,false);
 
     for(const e of enemies)updateEnemy(e,dt);
+
+    /* quest giver proximity dialog */
+    _v1.subVectors(player.position,giver.position);
+    const nearGiver=_v1.length()<3.5&&!P.dead;
+    dialog.classList.toggle('hidden',!nearGiver);
+    giver.rotation.y=Math.atan2(player.position.x-giver.position.x,player.position.z-giver.position.z);
+    giver.userData.marker.rotation.y=tGlobal*2;
+    giver.userData.marker.position.y=2.5+Math.sin(tGlobal*3)*.15;
+
+    /* boss HUD */
+    if(bossRef&&bossRef.alive){
+      bossBar.classList.remove('hidden');
+      bFill.style.width=clamp(bossRef.hp/bossRef.maxHp*100,0,100)+'%';
+    }else bossBar.classList.add('hidden');
 
     updateAim();
     updateSkillUI();
@@ -2035,7 +2177,7 @@ function animate(){
   updateParticles(dt);
   updateFlashes(dt);
   updateFX(dt);
-  shakeAmp*=Math.exp(-5.5*dt);
+  shakeAmp*=Math.exp(-4.5*dt);
 
   const headY=player.position.y+1.7;
   camera.position.set(
@@ -2043,7 +2185,12 @@ function animate(){
     headY+Math.sin(pitch)*camDist,
     player.position.z+Math.cos(yaw)*Math.cos(pitch)*camDist);
   if(camera.position.y<.5)camera.position.y=.5;
-  if(shakeAmp>.001)camera.position.add(_v1.set((Math.random()-.5)*shakeAmp*.45,(Math.random()-.5)*shakeAmp*.45,(Math.random()-.5)*shakeAmp*.45));
+  /* simple high-frequency random offset shake */
+  if(shakeAmp>.001){
+    camera.position.x+=(Math.random()-.5)*shakeAmp*1.1;
+    camera.position.y+=(Math.random()-.5)*shakeAmp*1.1;
+    camera.position.z+=(Math.random()-.5)*shakeAmp*1.1;
+  }
   camera.lookAt(player.position.x,headY,player.position.z);
 
   composer.render();
